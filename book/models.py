@@ -21,27 +21,20 @@ class Comment(models.Model):
 	user = models.ForeignKey('user.User', on_delete=models.CASCADE)
 	book = models.ForeignKey(Book, on_delete=models.CASCADE)
 	comment = models.CharField(max_length=200)
+	created_at = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
 		db_table = "comments"
 
 
-class Recommend(models.Model):
+class Info(models.Model):
 	user = models.ForeignKey('user.User', on_delete=models.CASCADE)
 	book = models.ForeignKey(Book, on_delete=models.CASCADE)
 	recommend = models.IntegerField()
-
-	class Meta:
-		db_table = "recommends"
-
-
-class Rating(models.Model):
-	user = models.ForeignKey('user.User', on_delete=models.CASCADE)
-	book = models.ForeignKey(Book, on_delete=models.CASCADE)
 	rating = models.IntegerField()
 
 	class Meta:
-		db_table = "ratings"
+		db_table = "infos"
 
 
 class ReadTime(models.Model):
