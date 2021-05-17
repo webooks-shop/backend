@@ -109,21 +109,23 @@ class FilterView(View):
 				users=users.filter(bf = bf)
 			
 			book_list = []
+			user_group =[]
 			for i in users:
-				print("iii",i.id,i.name)
+				user_group.append(i.group)
 				for j in i.info_set.all():
-					print("j",j.book_id)
 					book_list.append(j.book_id)
 			a = top.filter(id__in=book_list)
+			set_user_group = set(user_group)
+			user_group=list(set_user_group)
+			user_group.sort()
+			group={"groups":user_group}
 			books=[]
 			for qu in a:
-				print("qu:",qu,"qu.id:",qu.id)
 				rating=0
 				reco=[]
 				total=0
 				back=0
 				for j in qu.info_set.all():
-					print("jjjjj",j.user.bf,j.user.name)
 					if j.user.bf ==1 :
 						back += 1
 					total += 1
@@ -147,7 +149,7 @@ class FilterView(View):
 				}
 				books.append(dict)
 			print(books)
-			return JsonResponse({"books":books},status=200)
+			return JsonResponse({"books":books,"groups":user_group},status=200)
 		except KeyError as e:
 			return HttpResponse({"Message":f"key_error: => {e}"},status = 400)
 
@@ -241,7 +243,8 @@ class BookDetailView(View):
 					"user_image":comment.user.image,
 					"user_group":comment.user.group,
 					"user_bf":comment.user.bf,
-					"text":comment.comment
+					"text":comment.comment,
+					"created_at":comment.created_at,
 				}
 				comment_list.append(dic)
 			comment={
